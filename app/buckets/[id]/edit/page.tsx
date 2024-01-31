@@ -8,14 +8,11 @@ export default async function Page({
   params: { id: string }
 }) {
   const id = params.id;
-  fetchUsers();
-  fetchBucketById(id);
 
   const [users, bucket] = await Promise.all([
     fetchUsers(),
     fetchBucketById(id),
   ]);
-
 
   return (
     <main>

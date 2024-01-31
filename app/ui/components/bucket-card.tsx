@@ -14,6 +14,7 @@ import { LucideTrash, Pencil, Save, Ban } from 'lucide-react';
 import { List, Item } from '@/lib/definitions';
 import ControlButton from '@/ui/components/control-button';
 import { Suspense } from 'react';
+import { UpdateBucket, DeleteBucket } from '@/ui/components/buttons';
 
 interface BucketProps {
   bucket: List;
@@ -26,10 +27,14 @@ export default function BucketCard({
 
   return (
     <Card className="w-[400px] shadow-md">
-      <CardHeader className="flex flex-row items-baseline justify-between">
+      <CardHeader className="flex flex-row items-start justify-between">
         <div>
           <CardTitle>{bucket.title}</CardTitle>
           <CardDescription>{bucket.description}</CardDescription>
+        </div>
+        <div className="flex gap-2">
+          <UpdateBucket id={bucket.id} />
+          <DeleteBucket id={bucket.id} />
         </div>
       </CardHeader>
       <CardContent>

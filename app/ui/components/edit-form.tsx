@@ -23,8 +23,8 @@ export default function EditInvoiceForm({
           </label>
           <div className="relative">
             <select
-              id="user"
-              name="user"
+              id="user_id"
+              name="user_id"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               defaultValue={bucket.user_id}
             >
