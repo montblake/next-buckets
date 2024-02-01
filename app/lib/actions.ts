@@ -31,7 +31,10 @@ export type State = {
 };
 
 
-export async function createBucket(prevState: State, formData: FormData) {
+export async function createBucket(
+  prevState: State,
+  formData: FormData
+) {
   // validate form using Zod
   const validatedFields = CreateBucket.safeParse({
     user_id: formData.get('user_id'),
@@ -69,7 +72,11 @@ export async function createBucket(prevState: State, formData: FormData) {
   redirect('/buckets');
 }
 
-export async function updateBucket(prevState: State, id: string, formData: FormData) {
+export async function updateBucket(
+  id: string,
+  prevState: State,
+  formData: FormData
+) {
   // Validate form fields using Zod
   const validatedFields = UpdateBucket.safeParse({
     user_id: formData.get('user_id'),
@@ -81,7 +88,7 @@ export async function updateBucket(prevState: State, id: string, formData: FormD
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing fields. Failed to Update Invoice.',
+      message: 'Missing fields. Failed to Update Bucket.',
     };
   }
 
