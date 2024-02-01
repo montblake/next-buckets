@@ -6,23 +6,12 @@ import { QueryResultRow } from '@vercel/postgres';
 export async function fetchLists() {
   noStore();
   try {
-
-
-
-    const data = await sql`SELECT * FROM lists`;
-    const lists: List[] = data.rows.map((row: QueryResultRow) => ({
-      id: row.id,
-      user_id: row.user_id,
-      title: row.title,
-      description: row.description,
-    }));
-
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
+    const data = await sql<List>`SELECT * FROM lists`;
+    const lists = data.rows;
     return lists;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch lists data.');
+    throw new Error('Failed to fetch buckets data.');
   }
 }
 
