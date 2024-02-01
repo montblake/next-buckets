@@ -9,7 +9,6 @@ export default async function Page({
   params: { id: string }
 }) {
   const id = params.id;
-
   const [users, bucket] = await Promise.all([
     fetchUsers(),
     fetchBucketById(id),
