@@ -1,6 +1,7 @@
 import Form from '@/ui/components/edit-form';
 import Breadcrumbs from '@/ui/components/breadcrumbs';
 import { fetchBucketById, fetchUsers } from '@/lib/data';
+import { notFound } from 'next/navigation';
 
 export default async function Page({
   params
@@ -13,6 +14,11 @@ export default async function Page({
     fetchUsers(),
     fetchBucketById(id),
   ]);
+
+  console.log("Found Bucket", bucket);
+  if (!bucket) {
+    notFound();
+  }
 
   return (
     <main>

@@ -23,10 +23,16 @@ export async function createBucket(formData: FormData) {
     description: formData.get('description'),
   });
 
-  await sql`
-  INSERT INTO lists (user_id, title, description)
-  VALUES (${user_id}, ${title}, ${description})
-  `;
+  try {
+    await sql`
+    INSERT INTO lists (user_id, title, description)
+    VALUES (${user_id}, ${title}, ${description})
+    `;
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to Create Bucket.',
+    };
+  }
 
   revalidatePath('/buckets');
   redirect('/buckets');
@@ -39,17 +45,29 @@ export async function updateBucket(id: string, formData: FormData) {
     description: formData.get('description'),
   });
 
-  await sql`
+  try {
+    await sql`
     UPDATE lists
     SET user_id = ${user_id}, title = ${title}, description = ${description}
     WHERE id = ${id}
-  `;
+    `;
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to Update Bucket.',
+    };
+  }
 
   revalidatePath('/buckets');
   redirect('/buckets')
 }
 
 export async function deleteBucket(id: string) {
-  await sql`DELETE FROM lists WHERE id = ${id}`;
+  try {
+    await sql`DELETE FROM lists WHERE id = ${id}`;
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to Delete Invoice.',
+    };
+  }
   revalidatePath('/buckets');
 }

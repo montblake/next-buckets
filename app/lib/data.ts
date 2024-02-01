@@ -10,13 +10,6 @@ export async function fetchLists() {
 
 
     const data = await sql`SELECT * FROM lists`;
-    // const lists: List[] = data.rows.map((row: QueryResultRow) => ({
-    //   id: row.id,
-    //   user_id: row.user_id,
-    //   title: row.title,
-    //   description: row.description,
-    // }));
-    // console.log("ROWS", rows)
     const lists: List[] = data.rows.map((row: QueryResultRow) => ({
       id: row.id,
       user_id: row.user_id,
@@ -36,13 +29,7 @@ export async function fetchLists() {
 export async function fetchBucketById(id: string) {
   noStore();
   try {
-    const data = await sql`SELECT * FROM lists WHERE lists.id = ${id}`
-    // const bucket: List = data.rows.map((row: QueryResultRow) => ({
-    //   id: row.id,
-    //   user_id: row.user_id,
-    //   title: row.title,
-    //   description: row.description,
-    // }))[0];
+    const data = await sql`SELECT * FROM lists WHERE lists.id = ${id}`;
     const bucket = data.rows[0] as unknown as List;
     return bucket;
   } catch (error) {
