@@ -18,8 +18,8 @@ export async function fetchLists() {
 export async function fetchBucketById(id: string) {
   noStore();
   try {
-    const data = await sql`SELECT * FROM lists WHERE lists.id = ${id}`;
-    const bucket = data.rows[0] as unknown as List;
+    const data = await sql<List>`SELECT * FROM lists WHERE lists.id = ${id}`;
+    const bucket = data.rows[0];
     return bucket;
   } catch (error) {
     console.error('Database Error:', error);
@@ -30,22 +30,15 @@ export async function fetchBucketById(id: string) {
 export async function fetchItems() {
   noStore();
   try {
-    const data = await sql`SELECT * FROM items`;
-    const items: Item[] = data.rows.map((row: QueryResultRow) => ({
-      id: row.id,
-      list_id: row.list_id,
-      text: row.text,
-      done: row.done,
-    }));
-
-    await new Promise(resolve => setTimeout(resolve, 5000));
-
+    const data = await sql<Item>`SELECT * FROM items`;
+    const items = data.rows;
     return items;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch items data.');
   }
 }
+
 const ITEMS_PER_PAGE = 6;
 export async function fetchFilteredBuckets(
   query: string,
@@ -55,7 +48,7 @@ export async function fetchFilteredBuckets(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const data = await sql`
+    const data = await sql<List>`
       SELECT
         lists.id,
         lists.user_id,
@@ -67,7 +60,7 @@ export async function fetchFilteredBuckets(
         lists.description ILIKE ${`%${query}%`}
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
-    const buckets = data.rows as unknown as List[];
+    const buckets = data.rows;
     return buckets;
   } catch (error) {
     console.error('Database Error:', error);
@@ -78,15 +71,14 @@ export async function fetchFilteredBuckets(
 export async function fetchBucketsPages(query: string) {
   noStore();
   try {
-    const data = await sql`SELECT COUNT(*)
-    FROM lists
-    WHERE
-      lists.title ILIKE ${`%${query}%`} OR
-      lists.description ILIKE ${`%${query}%`}
+    const data = await sql`
+      SELECT COUNT(*)
+      FROM lists
+      WHERE
+        lists.title ILIKE ${`%${query}%`} OR
+        lists.description ILIKE ${`%${query}%`}
     `;
     const count = data.rows[0].count;
-    console.log("COUNT", count);
-
     const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
@@ -98,12 +90,12 @@ export async function fetchBucketsPages(query: string) {
 export async function fetchBucketItems(list_id: string) {
   noStore();
   try {
-    const data = await sql`
+    const data = await sql<Item>`
       SELECT * FROM items
       WHERE items.list_id = ${list_id}
     `;
-    const listItems = data.rows as unknown as Item[];
-    return listItems;
+    const bucketItems = data.rows;
+    return bucketItems;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch ListItems');
