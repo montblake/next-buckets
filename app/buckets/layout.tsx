@@ -6,9 +6,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative flex h-screen w-screen flex-col items-center justify-start space-y-4 text-foreground">
       <BucketsHeader />
-      <div className="absolute top-4 right-4">
+      {/* <div className="absolute top-4 right-4">
         <ModeToggle />
-      </div>
+      </div> */}
       {children}
 
       <BucketsFooter />
